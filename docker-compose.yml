@@ -1,0 +1,24 @@
+version: "3"
+services:
+  appserver:
+    build: ./appserver
+    volumes:
+      - ./appserver/index.js:/app/index.js
+    links:
+      - mongo
+    environment:
+      - ZMQ_SERVER_ADDR=tcp://northapi:5000
+  northapi:
+    build: ./northapi
+    volumes:
+      - ./northapi/index.js:/app/index.js
+    expose:
+      - "5000"
+    ports:
+      - "8080:8080"
+    environment:
+      - ZMQ_BIND_ADDR=tcp://*:5000
+  mongo:
+    image: mongo
+    expose:
+      - "27017"
