@@ -9,7 +9,9 @@
   "author": "Gergő Hodány",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.16.4",
     "nodemon": "^1.18.6",
-    "zmq": "^2.15.3"
+    "zeromq": "^5.1.0",
+    "zerorpc": "^0.9.8"
   }
 }

@@ -6,18 +6,22 @@ services:
       - ./appserver/index.js:/app/index.js
     links:
       - mongo
+    expose:
+      - "5000"
     environment:
-      - ZMQ_SERVER_ADDR=tcp://northapi:5000
+      # - ZMQ_SERVER_ADDR=tcp://northapi:5000
+      - ZMQ_BIND_ADDR=tcp://*:5000
   northapi:
     build: ./northapi
     volumes:
       - ./northapi/index.js:/app/index.js
-    expose:
-      - "5000"
+    # expose:
+    #   - "5000"
     ports:
       - "8080:8080"
     environment:
-      - ZMQ_BIND_ADDR=tcp://*:5000
+      # - ZMQ_BIND_ADDR=tcp://*:5000
+      - ZMQ_SERVER_ADDR=tcp://appserver:5000
   mongo:
     image: mongo
     expose:
