@@ -2,7 +2,6 @@ var sensorModel = require('./../../models/sensor');
 
 module.exports = function(data) {
     return new Promise((resolve, reject) => {
-        console.log(data);
         var sensor = new sensorModel();
         sensor.name = data.name;
         sensor.type = data.type;

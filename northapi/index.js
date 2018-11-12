@@ -10,6 +10,20 @@ client.on("error", function(error) {
     console.error("RPC client error:", error);
 });
 
+app.get('/fake', function(req, res, next){
+    console.log(`[API][Device][Delete] 5be54c2a919931002c3d189a`);
+    client.invoke("DeleteDevice", "5be54c2a919931002c3d189a", (err, response, more) => {
+        if(err) {
+            console.error("INVOKE ERROR", err.message);
+            res.status(404).send(err.message);
+        }
+        else {
+            console.log("Device deleted");
+            res.status(200).send("Success");
+        }
+    });
+});
+
 app.get('/', function(req, res, next){
     const data = { 
         device: { 
@@ -29,8 +43,27 @@ app.get('/', function(req, res, next){
     console.log(`[API][Device][Create] ${data.device.name}`);
     client.invoke("CreateDevice", data, (err, response, more) => {
         if(err) console.error("INVOKE ERROR", err);
-        else console.log("RPC INVOKED", response);
-        res.send("Hello World!");
+        else console.log("Device created:", response);
+        let _did = JSON.parse(response)._did;
+        client.invoke("GetDevice", _did, (err, response, more) => {
+            if(err) {
+                console.error("INVOKE ERROR", err);
+                res.status(404).send("asd");
+            }
+            else {
+                console.log("Device found:", response); 
+                // res.send(response);
+                client.invoke("DeleteDevice", _did, (err, response, more) => {
+                    if(err) {
+                        console.error("INVOKE ERROR", err);
+                        res.status(404).send(JSON.stringify(err));
+                    }
+                    else {
+                        res.send("Success");
+                    }
+                });
+            }
+        });
     });
 });
 
