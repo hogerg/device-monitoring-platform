@@ -1,5 +1,6 @@
 var Schema = require('mongoose').Schema;
 var db = require('../config/db');
+var sensorModel = require('./sensor');
 
 let deviceSchema = new Schema({ 
     name: String,
@@ -8,7 +9,11 @@ let deviceSchema = new Schema({
 
 deviceSchema.post('remove', function(removed){
     if(typeof removed === 'undefined' || !removed) return;
-    console.log('removed', removed);
+    sensorModel.find({ device: removed._id}).exec((err, sensors) => {
+        sensors.map(s => {
+            s.remove();
+        });
+    });
 });
 
 var device = db.model('Device', deviceSchema);

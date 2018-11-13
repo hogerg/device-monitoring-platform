@@ -1,5 +1,5 @@
 var Schema = require('mongoose').Schema;
-var db = require('/config/db');
+var db = require('../config/db');
 
 var measurement = db.model('Measurement', {
     name: String,

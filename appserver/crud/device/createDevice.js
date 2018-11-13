@@ -5,8 +5,8 @@ module.exports = function(data) {
         var device = new deviceModel();
         device.name = data.name;
         device.save((err, result) => {
-            if(err) reject(`Could not create device ${data.name}`);
-            resolve(result);
+            if(err) return reject({status: 500, message: `Internal Server Error: ${err}`});
+            return resolve(result);
         });
     });
 };

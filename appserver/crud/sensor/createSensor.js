@@ -7,8 +7,8 @@ module.exports = function(data) {
         sensor.type = data.type;
         sensor.device = data.device;
         sensor.save((err, result) => {
-            if(err) reject(`Could not create sensor ${data.name}`);
-            resolve(result);
+            if(err) return reject({status: 500, message: `Internal Server Error: ${err}`});
+            return resolve(result);
         });
     });
 };
