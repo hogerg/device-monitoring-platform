@@ -12,7 +12,9 @@ RUN npm install --silent
 
 COPY . /app
 
-# REST API port
-EXPOSE 8080
+# zerorpc bind port
+EXPOSE 5000
+# zmq bind port
+EXPOSE 5001
 
 CMD ["npm", "start"]

@@ -1,0 +1,16 @@
+{
+  "name": "dmp-pushserver",
+  "version": "1.0.0",
+  "description": "Device Monitoring Platform Push Notification Server",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "author": "Gergő Hodány",
+  "license": "ISC",
+  "dependencies": {
+    "nodemon": "^1.18.6",
+    "socket.io": "^2.1.1",
+    "zeromq": "^5.1.0"
+  }
+}

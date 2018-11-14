@@ -12,7 +12,7 @@ RUN npm install --silent
 
 COPY . /app
 
-# zerorpc bind port
-EXPOSE 5000
+# Socket.IO port
+EXPOSE 8080
 
 CMD ["npm", "start"]
