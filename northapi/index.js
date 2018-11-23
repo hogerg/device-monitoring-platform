@@ -14,10 +14,26 @@ client.on("error", function(error) {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+let authKey = 'Basic ' + Buffer.from("TestUser:SamplePassword").toString('base64');
+var checkAuth = (req, res, next) => {
+    if(!req.headers.authorization){
+        return res.status(403).json({error: "Authorization required"});
+    }
+    else if (req.headers.authorization != authKey){
+        return res.status(401).json({error: "Unauthorized"});
+    }
+    else next();
+};
+
 var router = express.Router();
 
 /**
  * @api {get} /devices List all devices
+ * @apiHeader {String} Authorization Basic authorization key
+ * @apiHeaderExample {json} Header example:
+ *     {
+ *       "Authorization": "Basic UmFuZG9tVGVzdE5hbWU6QW5vdGhlclBhc3M="
+ *     }
  * @apiGroup Devices
  * @apiSuccess {Object[]} devices Device list
  * @apiSuccess {String} devices._id Device id 
@@ -53,7 +69,12 @@ router.get('/devices', (req, res, next) => {
 });
 
 /**
- * @api {get} /device/:id Find device by identifier
+ * @api {get} /devices/:id Find device by identifier
+ * @apiHeader {String} Authorization Basic authorization key
+ * @apiHeaderExample {json} Header example:
+ *     {
+ *       "Authorization": "Basic UmFuZG9tVGVzdE5hbWU6QW5vdGhlclBhc3M="
+ *     }
  * @apiGroup Devices
  * @apiParam {String} id Device id
  * @apiSuccess {String} _id Device id 
@@ -73,7 +94,7 @@ router.get('/devices', (req, res, next) => {
  * @apiErrorExample {json} Internal Server Error
  *    HTTP/1.1 500 Internal Server Error
  */
-router.get('/device/:id', (req, res, next) => {
+router.get('/devices/:id', (req, res, next) => {
     console.log(`[API][Device][Get] ${req.params.id}`);
     client.invoke("GetDevice", req.params.id, (err, response, more) => {
         if(err) {
@@ -85,7 +106,12 @@ router.get('/device/:id', (req, res, next) => {
 });
 
 /**
- * @api {post} /device Create a new device
+ * @api {post} /devices Create a new device
+ * @apiHeader {String} Authorization Basic authorization key
+ * @apiHeaderExample {json} Header example:
+ *     {
+ *       "Authorization": "Basic UmFuZG9tVGVzdE5hbWU6QW5vdGhlclBhc3M="
+ *     }
  * @apiGroup Devices
  * @apiParam {Object} device Device data
  * @apiParam {String} device.name Device name
@@ -113,7 +139,7 @@ router.get('/device/:id', (req, res, next) => {
  * @apiErrorExample {json} Internal Server Error
  *    HTTP/1.1 500 Internal Server Error
  */
-router.post('/device', (req, res, next) => {
+router.post('/devices', (req, res, next) => {
     console.log(`[API][Device][Create] ${req.body.device.name}`);
     client.invoke("CreateDevice", req.body, (err, response, more) => {
         if(err) {
@@ -125,7 +151,12 @@ router.post('/device', (req, res, next) => {
 });
 
 /**
- * @api {delete} /device/:id Delete device by identifier
+ * @api {delete} /devices/:id Delete device by identifier
+ * @apiHeader {String} Authorization Basic authorization key
+ * @apiHeaderExample {json} Header example:
+ *     {
+ *       "Authorization": "Basic UmFuZG9tVGVzdE5hbWU6QW5vdGhlclBhc3M="
+ *     }
  * @apiGroup Devices
  * @apiParam {String} id Device id
  * @apiSuccessExample {json} Success
@@ -135,7 +166,7 @@ router.post('/device', (req, res, next) => {
  * @apiErrorExample {json} Internal Server Error
  *    HTTP/1.1 500 Internal Server Error
  */
-router.delete('/device/:id', (req, res, next) => {
+router.delete('/devices/:id', (req, res, next) => {
     console.log(`[API][Device][Delete] ${req.params.id}`);
     client.invoke("DeleteDevice", req.params.id, (err, response, more) => {
         if(err) {
@@ -147,7 +178,12 @@ router.delete('/device/:id', (req, res, next) => {
 });
 
 /**
- * @api {get} /sensor/:id Find sensor by identifier
+ * @api {get} /sensors/:id Find sensor by identifier
+ * @apiHeader {String} Authorization Basic authorization key
+ * @apiHeaderExample {json} Header example:
+ *     {
+ *       "Authorization": "Basic UmFuZG9tVGVzdE5hbWU6QW5vdGhlclBhc3M="
+ *     }
  * @apiGroup Sensors
  * @apiParam {String} id Sensor id
  * @apiSuccess {String} _id Sensor id 
@@ -166,7 +202,7 @@ router.delete('/device/:id', (req, res, next) => {
  * @apiErrorExample {json} Device not found
  *    HTTP/1.1 404 Not Found
  */
-router.get('/sensor/:id', (req, res, next) => {
+router.get('/sensors/:id', (req, res, next) => {
     console.log(`[API][Sensor][Get] ${req.params.id}`);
     client.invoke("GetSensor", req.params.id, (err, response, more) => {
         if(err) {
@@ -178,7 +214,12 @@ router.get('/sensor/:id', (req, res, next) => {
 });
 
 /**
- * @api {get} /measurement/:id Find measurement by identifier
+ * @api {get} /measurements/:id Find measurement by identifier
+ * @apiHeader {String} Authorization Basic authorization key
+ * @apiHeaderExample {json} Header example:
+ *     {
+ *       "Authorization": "Basic UmFuZG9tVGVzdE5hbWU6QW5vdGhlclBhc3M="
+ *     }
  * @apiGroup Measurements
  * @apiParam {String} id Measurement id
  * @apiSuccess {String} _id Measurement id 
@@ -192,7 +233,7 @@ router.get('/sensor/:id', (req, res, next) => {
  *    HTTP/1.1 200 OK
  *    {
  *      "_id": "5bea93ea6626e50028386ad1",
- *      "name": "Kitchen Temperature Sensor",
+ *      "name": "Sensor Value",
  *      "value": 123,
  *      "unit": "°C",
  *      "date": "1542106641525",
@@ -202,7 +243,7 @@ router.get('/sensor/:id', (req, res, next) => {
  * @apiErrorExample {json} Measurement not found
  *    HTTP/1.1 404 Not Found
  */
-router.get('/measurement/:id', (req, res, next) => {
+router.get('/measurements/:id', (req, res, next) => {
     console.log(`[API][Measurement][Get] ${req.params.id}`);
     client.invoke("GetMeasurement", req.params.id, (err, response, more) => {
         if(err) {
@@ -214,7 +255,12 @@ router.get('/measurement/:id', (req, res, next) => {
 });
 
 /**
- * @api {get} /measurement/:sensor/:name Find latest measurement by sensor identifier and name
+ * @api {get} /measurements/:sensor/:name Find latest measurement by sensor identifier and name
+ * @apiHeader {String} Authorization Basic authorization key
+ * @apiHeaderExample {json} Header example:
+ *     {
+ *       "Authorization": "Basic UmFuZG9tVGVzdE5hbWU6QW5vdGhlclBhc3M="
+ *     }
  * @apiGroup Measurements
  * @apiParam {String} sensor Sensor id
  * @apiParam {String} name Measurement name
@@ -229,7 +275,7 @@ router.get('/measurement/:id', (req, res, next) => {
  *    HTTP/1.1 200 OK
  *    {
  *      "_id": "5bea93ea6626e50028386ad1",
- *      "name": "Kitchen Temperature Sensor",
+ *      "name": "Sensor Value",
  *      "value": 123,
  *      "unit": "°C",
  *      "date": "1542106641525",
@@ -239,7 +285,7 @@ router.get('/measurement/:id', (req, res, next) => {
  * @apiErrorExample {json} Measurement not found
  *    HTTP/1.1 404 Not Found
  */
-router.get('/measurement/:sensor/:name', (req, res, next) => {
+router.get('/measurements/:sensor/:name', (req, res, next) => {
     console.log(`[API][Measurement][Get] Get latest ${req.params.name} measurement for sensor ${req.params.sensor}`);
     client.invoke("GetLatestMeasurement", req.params.sensor, req.params.name, (err, response, more) => {
         if(err) {
@@ -251,42 +297,59 @@ router.get('/measurement/:sensor/:name', (req, res, next) => {
 });
 
 /**
- * @api {post} /measurement Create a new measurement
+ * @api {get} /measurements/:sensor Find all measurements by sensor identifier
+ * @apiHeader {String} Authorization Basic authorization key
+ * @apiHeaderExample {json} Header example:
+ *     {
+ *       "Authorization": "Basic UmFuZG9tVGVzdE5hbWU6QW5vdGhlclBhc3M="
+ *     }
  * @apiGroup Measurements
- * @apiParam {String} name Measurement name
- * @apiParam {Number} value Measurement value
- * @apiParam {String} unit Measurement unit
- * @apiParam {Date} date Measurement timestamp
  * @apiParam {String} sensor Sensor id
- * @apiParamExample {json} Input
- *    {
- *      "name": "foo",
- *      "value": 123,
- *      "unit": "°C",
- *      "date": 123123123,
- *      "sensor": "5bea93ea6626e50028386ad1"
- *    }
- * @apiSuccess {String} _id Measurement id
+ * @apiSuccess {Object[]} measurements Measurement list
+ * @apiSuccess {String} measurement._id Measurement id 
+ * @apiSuccess {String} measurement.name Measurement name
+ * @apiSuccess {Number} measurement.value Measurement value
+ * @apiSuccess {String} measurement.unit Measurement unit
+ * @apiSuccess {Date} measurement.date Measurement timestamp
+ * @apiSuccess {String} measurement.sensor Sensor id
+ * @apiSuccess {Number} measurement.__v Metadata containing the document revision number
  * @apiSuccessExample {json} Success
- *    HTTP/1.1 201 Created
- *    {
- *      "_id": "5bea93ea6626e50028386ad2"
- *    }
- * @apiErrorExample {json} Internal Server Error
- *    HTTP/1.1 500 Internal Server Error
+ *    HTTP/1.1 200 OK
+ *    [
+ *       {
+ *          "_id": "5bea93ea6626e50028386ad1",
+ *          "name": "Sensor Value",
+ *          "value": 28,
+ *          "unit": "°C",
+ *          "date": "1542106641525",
+ *          "sensor": "5bea93ea6626e50028386ad1",
+ *          "__v": 1
+ *       },
+ *       {
+ *          "_id": "5bea93ea6626e50028386ad2",
+ *          "name": "Sensor Value",
+ *          "value": 25,
+ *          "unit": "°C",
+ *          "date": "1542106690000",
+ *          "sensor": "5bea93ea6626e50028386ad1",
+ *          "__v": 1
+ *       }
+ *    ]
+ * @apiErrorExample {json} Measurement not found
+ *    HTTP/1.1 404 Not Found
  */
-router.post('/measurement', (req, res, next) => {
-    console.log(`[API][Measurement][Create] ${req.body.name}`);
-    client.invoke("CreateMeasurement", req.body, (err, response, more) => {
+router.get('/measurements/:sensor', (req, res, next) => {
+    console.log(`[API][Measurement][Get] Get measurements for sensor ${req.params.sensor}`);
+    client.invoke("GetMeasurementsBySensorId", req.params.sensor, (err, response, more) => {
         if(err) {
             err = JSON.parse(err.message);
             return res.status(err.status).send({error: err.message});
         }
-        return res.status(201).send(JSON.parse(response));
+        return res.status(200).send(JSON.parse(response));
     });
 });
 
-app.use('/api', router);
+app.use('/api', checkAuth, router);
 app.use('/', express.static('apidoc'));
 
 app.listen(8080, function(){

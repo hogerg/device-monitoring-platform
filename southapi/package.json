@@ -1,0 +1,23 @@
+{
+  "name": "dmp-south-api",
+  "version": "1.0.0",
+  "description": "Device Monitoring Platform Southbound API Gateway",
+  "main": "index.js",
+  "scripts": {
+    "start": "apidoc -e node_modules -o apidoc && nodemon index.js"
+  },
+  "author": "Gergő Hodány",
+  "license": "ISC",
+  "dependencies": {
+    "apidoc": "^0.17.7",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "nodemon": "^1.18.6",
+    "zeromq": "^5.1.0",
+    "zerorpc": "^0.9.8"
+  },
+  "apidoc": {
+    "title": "APIDoc",
+    "url": "api"
+  }
+}
