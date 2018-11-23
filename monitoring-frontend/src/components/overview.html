@@ -1,0 +1,23 @@
+<main role="main" class="container" ng-init="$ctrl.initialize()">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+        <span class="list-group-item list-group-header d-inline-block text-center">Devices</span>
+        <button type="button" class="list-group-item list-group-item-action btn">Device 1</button>
+        <button type="button" class="list-group-item list-group-item-action btn">Device 2</button>
+        <button type="button" class="list-group-item list-group-item-action btn">Device 3</button>
+        <button type="button" class="list-group-item list-group-item-action btn">Device 4</button>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <fieldset class="title">
+        <legend>Device 1</legend>
+      </fieldset>
+      <div ng-repeat="device in $ctrl.devices">
+        <h1>{{device.name}}</h1>
+        <p>{{device._id}}</p>
+        <p>{{device.sensors}}</p>
+      </div>
+    </div>
+  </div>
+</main>
