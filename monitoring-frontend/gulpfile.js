@@ -65,7 +65,7 @@ gulp.task('views', function(){
 
 gulp.task('res', ['res.fontawesome'], function(){
   return gulp.src(['./res/**'])
-  .pipe(gulp.dest('./dist'));
+  .pipe(gulp.dest('./dist/res'));
 });
 
 gulp.task('res.fontawesome', function(){

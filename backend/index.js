@@ -5,7 +5,7 @@ const getDevice = require("./crud/device/getDevice");
 
 const createMeasurement = require("./crud/measurement/createMeasurement");
 const deleteMeasurement = require("./crud/measurement/deleteMeasurement");
-const getLatestMeasurement = require("./crud/measurement/getLatestMeasurement");
+const getLatestMeasurements = require("./crud/measurement/getLatestMeasurement");
 const getMeasurement = require("./crud/measurement/getMeasurement");
 const getMeasurementsBySensorId = require("./crud/measurement/getMeasurementsBySensorId");
 
@@ -130,16 +130,16 @@ var server = new zerorpc.Server({
             reply(JSON.stringify(err));
         });
     },
-    GetLatestMeasurement: function(sensor, name, reply) {
-        console.log(`[NorthAPI] Processing get latest measurement request for sensor id ${sensor}`);
+    GetLatestMeasurements: function(sensor, reply) {
+        console.log(`[NorthAPI] Processing get latest measurements request for sensor id ${sensor}`);
         mongoValidator(sensor)
-        .then(() => getLatestMeasurement(sensor, name))
-        .then(measurement => {
-            console.log(`[Measurement] Latest ${name} measurement found for sensor ${sensor}`);
-            reply(null, JSON.stringify(measurement));
+        .then(() => getLatestMeasurements(sensor))
+        .then(measurements => {
+            console.log(`[Measurement] Latest measurements found for sensor ${sensor}`);
+            reply(null, JSON.stringify(measurements));
         })
         .catch(err => {
-            console.error(`[Measurement] Get latest ${name} measurement for sensor error: ${JSON.stringify(err)}`);
+            console.error(`[Measurement] Get latest measurements for sensor error: ${JSON.stringify(err)}`);
             reply(JSON.stringify(err));
         });
     },

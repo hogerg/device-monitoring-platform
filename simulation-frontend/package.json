@@ -1,0 +1,49 @@
+{
+  "name": "idps-frontend",
+  "version": "1.0.0",
+  "description": "IDPS Frontend Project",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/iot17/idps-frontend.git"
+  },
+  "author": "Ericsson",
+  "license": "Prop",
+  "bugs": {
+    "url": "https://gitlab.com/iot17/idps-frontend/issues"
+  },
+  "homepage": "https://gitlab.com/iot17/idps-frontend#README",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-plugin-transform-remove-strict-mode": "0.0.2",
+    "babel-preset-env": "^1.7.0",
+    "browserify": "^16.2.2",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^7.0.1",
+    "gulp-cli": "^2.0.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-connect": "^5.5.0",
+    "gulp-if": "^2.0.2",
+    "gulp-replace": "^1.0.0",
+    "gulp-rsync": "0.0.8",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-template": "^5.0.0",
+    "gulp-uglify": "^3.0.0",
+    "merge-stream": "^1.0.1",
+    "minimist": "^1.2.0",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0"
+  },
+  "dependencies": {
+    "@uirouter/angularjs": "^1.0.18",
+    "angular": "^1.7.2",
+    "angular-nvd3": "^1.0.9",
+    "angular-route": "^1.7.2",
+    "bootstrap": "^4.1.1",
+    "bootstrap-daterangepicker": "^3.0.3",
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.3.1",
+    "papaparse": "^4.5.0",
+    "popper.js": "^1.14.3",
+    "ui-leaflet": "^1.0.3"
+  }
+}

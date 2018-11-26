@@ -1,0 +1,137 @@
+/* @font-face {
+    font-family: 'Hilda';
+    src: url('fonts/EricssonHilda-Regular.ttf');
+}
+ */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active{
+  -webkit-box-shadow: inset 0 0 0px 9999px white;
+}
+
+/* body {
+    font-family: 'Hilda', sans-serif;
+} */
+
+body {
+  height: 100vh;
+  font-family: 'Montserrat', sans-serif;
+  font-variant: normal;
+  background-image: url('../res/images/bg.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+main {
+  margin-top: 20px;
+}
+
+h5 {
+  color: white;
+  text-align: center;
+  cursor: pointer;
+}
+
+.title {
+  text-align: center;
+}
+
+.navbar {
+  background-color: #222;
+}
+
+.container {
+  max-width: 90%;
+}
+
+.list-group {
+  margin-bottom: 1rem;
+}
+
+.list-group-header {
+  padding: .75rem 1.25rem;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.list-group-item {
+  padding: 0.4rem 1rem;
+  font-size: 12px;
+  background-color: rgba(0,0,0, 0.8);
+  color: white;
+}
+
+.btn, .btn:active, .btn:focus {
+  background-color: rgba(0,0,0, 0.8);
+  color: white;
+  border-color: black;
+  outline: 0!important;
+  transition-duration: 0.35s;
+  border-radius: 0;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background-color: black;
+  color: white;
+  border-color: black;
+  outline: none;
+  transition-duration: 0.35s;
+}
+
+.card {
+  border: none;
+  background-color: rgba(255,255,255,0.8);
+}
+
+.card-header {
+  background-color: rgba(0,0,0, 0.8);
+  border-radius: 0!important;
+}
+
+.card-header a {
+  color: white;
+  text-decoration: none;
+}
+
+.card-block {
+  text-align: justify;
+}
+
+.card-block i {
+  cursor: pointer;
+}
+
+.meas-block {
+  padding-left: 5px;
+  border-left: solid rgba(255,0,0,0.8) 5px;
+}
+
+chart nvd3 svg{
+  margin-top: -50px;
+  margin-bottom: -40px;
+}
+
+.table{
+  background-color: rgba(255,255,255,0.5);
+}
+
+.table > tbody > tr > td, .table > tbody > tr > td * {
+  vertical-align: middle;
+}
+
+.collapse-header{
+  cursor: pointer;
+}
+
+.collapse-header:after{
+  font-family:Fontawesome;
+  content:'\f078';
+  float:right;
+}
+.collapse-header.collapsed:after{
+  font-family:Fontawesome;
+  content:'\f054';
+}

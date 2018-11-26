@@ -54,9 +54,25 @@ module.exports = function(app){
             else return new Error('DMP Error', 'DMP Error', err);
         };
 
-        this.getDevices = function() {
+        this.getDevices = function(){
             logger("Get all devices");
             return apicall('/devices')
+            .catch(err => {
+                throw parseError(err);
+            });
+        };
+
+        this.getSensor = function(id){
+            logger(`Get sensor by id: ${id}`);
+            return apicall(`/sensors/${id}`)
+            .catch(err => {
+                throw parseError(err);
+            });
+        };
+
+        this.getLatestMeasurements = function(sensorid){
+            logger(`Get latest measurements for sensor: ${sensorid}`);
+            return apicall(`/measurements/latest/${sensorid}`)
             .catch(err => {
                 throw parseError(err);
             });

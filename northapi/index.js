@@ -268,7 +268,7 @@ router.get('/measurements/:id', (req, res, next) => {
 });
 
 /**
- * @api {get} /measurements/:sensor/:name Find latest measurement by sensor identifier and name
+ * @api {get} /measurements/latest/:sensor Find latest measurements by sensor identifier
  * @apiHeader {String} Authorization Basic authorization key
  * @apiHeaderExample {json} Header example:
  *     {
@@ -276,17 +276,17 @@ router.get('/measurements/:id', (req, res, next) => {
  *     }
  * @apiGroup Measurements
  * @apiParam {String} sensor Sensor id
- * @apiParam {String} name Measurement name
- * @apiSuccess {String} _id Measurement id 
- * @apiSuccess {String} name Measurement name
- * @apiSuccess {Number} value Measurement value
- * @apiSuccess {String} unit Measurement unit
- * @apiSuccess {Date} date Measurement timestamp
- * @apiSuccess {String} sensor Sensor id
- * @apiSuccess {Number} __v Metadata containing the document revision number
+ * @apiSuccess {Object[]} measurements Latest measurements
+ * @apiSuccess {String} measurements._id Measurement id 
+ * @apiSuccess {String} measurements.name Measurement name
+ * @apiSuccess {Number} measurements.value Measurement value
+ * @apiSuccess {String} measurements.unit Measurement unit
+ * @apiSuccess {Date} measurements.date Measurement timestamp
+ * @apiSuccess {String} measurements.sensor Sensor id
+ * @apiSuccess {Number} measurements.__v Metadata containing the document revision number
  * @apiSuccessExample {json} Success
  *    HTTP/1.1 200 OK
- *    {
+ *    [{
  *      "_id": "5bea93ea6626e50028386ad1",
  *      "name": "Sensor Value",
  *      "value": 123,
@@ -294,13 +294,13 @@ router.get('/measurements/:id', (req, res, next) => {
  *      "date": "1542106641525",
  *      "sensor": "5bea93ea6626e50028386ad1",
  *      "__v": 1,
- *    }
- * @apiErrorExample {json} Measurement not found
+ *    }]
+ * @apiErrorExample {json} Sensor not found
  *    HTTP/1.1 404 Not Found
  */
-router.get('/measurements/:sensor/:name', (req, res, next) => {
-    console.log(`[API][Measurement][Get] Get latest ${req.params.name} measurement for sensor ${req.params.sensor}`);
-    client.invoke("GetLatestMeasurement", req.params.sensor, req.params.name, (err, response, more) => {
+router.get('/measurements/latest/:sensor', (req, res, next) => {
+    console.log(`[API][Measurement][Get] Get latest measurements for sensor ${req.params.sensor}`);
+    client.invoke("GetLatestMeasurements", req.params.sensor, (err, response, more) => {
         if(err) {
             err = JSON.parse(err.message);
             return res.status(err.status).send({error: err.message});
@@ -310,7 +310,7 @@ router.get('/measurements/:sensor/:name', (req, res, next) => {
 });
 
 /**
- * @api {get} /measurements/:sensor Find all measurements by sensor identifier
+ * @api {get} /measurements/sensor/:sensor Find all measurements by sensor identifier
  * @apiHeader {String} Authorization Basic authorization key
  * @apiHeaderExample {json} Header example:
  *     {
@@ -351,7 +351,7 @@ router.get('/measurements/:sensor/:name', (req, res, next) => {
  * @apiErrorExample {json} Measurement not found
  *    HTTP/1.1 404 Not Found
  */
-router.get('/measurements/:sensor', (req, res, next) => {
+router.get('/measurements/sensor/:sensor', (req, res, next) => {
     console.log(`[API][Measurement][Get] Get measurements for sensor ${req.params.sensor}`);
     client.invoke("GetMeasurementsBySensorId", req.params.sensor, (err, response, more) => {
         if(err) {

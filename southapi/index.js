@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 let authKey = 'Basic ' + Buffer.from("TestUser:SamplePassword").toString('base64');
-var authCheck = (req, res, next) => {
+var checkAuth = (req, res, next) => {
     if(!req.headers.authorization){
         return res.status(403).json({error: "Authorization required"});
     }
@@ -24,6 +24,19 @@ var authCheck = (req, res, next) => {
     }
     else next();
 };
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    next();
+});
+
+app.options('*', (req, res) => {
+    res.json({
+        status: 'OK'
+    });
+});
 
 var router = express.Router();
 
@@ -68,7 +81,7 @@ router.post('/measurements', (req, res, next) => {
     });
 });
 
-app.use('/api', authCheck, router);
+app.use('/api', checkAuth, router);
 app.use('/', express.static('apidoc'));
 
 app.listen(8080, function(){

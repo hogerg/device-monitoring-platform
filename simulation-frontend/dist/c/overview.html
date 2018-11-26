@@ -1,0 +1,61 @@
+<main role="main" class="container" ng-init="$ctrl.initialize()">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+        <span class="list-group-item list-group-header d-inline-block text-center">Devices</span>
+        <span class="list-group-item list-group-item-action btn" ng-show="$ctrl.devices.length == 0">No devices</span>
+        <button type="button" class="list-group-item list-group-item-action btn" ng-repeat="device in $ctrl.devices" ng-click="$ctrl.viewDevice(device)">{{device.name}}</button>
+      </div>
+    </div>
+    <div class="col-md-9" ng-show="$ctrl.device">
+      <fieldset class="title">
+        <legend>{{$ctrl.device.name}}</legend>
+      </fieldset>
+      <div class="w-100 ml-4 mr-4">
+        <table class="table">
+          <thead>
+            <tr class="text-center">
+              <th class="w-25">Sensor</th>
+              <th class="w-75">Current value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Temperature</td>
+              <td>24</td>
+            </tr>
+            <tr>
+              <td>Humidity</td>
+              <td>40</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <button class="btn" ng-click="$ctrl.startSimulation($ctrl.device)">Start simulation</button>
+      <button class="btn" ng-click="$ctrl.stopSimulation($ctrl.device)">Stop simulation</button>
+      <!-- <div class="mt-2" id="accordion" role="tablist" aria-multiselectable="false">
+        <div class="card" ng-repeat="sensor in $ctrl.device.sensors">
+          <div class="card-header" role="tab" id="heading{{sensor._id}}">
+            <h5 class="mb-0" data-toggle="collapse" data-parent="#accordion" href="#collapse{{sensor._id}}"
+                 aria-expanded="false" aria-controls="collapse{{sensor._id}}"
+                 ng-click="$ctrl.viewSensor(sensor)">
+              {{sensor.name}}
+            </h5>
+          </div>
+          <div id="collapse{{sensor._id}}" class="collapse" role="tabpanel" aria-labelledby="heading{{sensor._id}}" data-parent="#accordion">
+            <div class="card-block">
+              <div class="meas-block mt-2 mb-2" ng-repeat="measurement in sensor.measurements">
+                Measurement: {{measurement.name}}
+                <br/>
+                Value: {{measurement.value|limitTo:8}} {{measurement.unit}}
+                <br/>
+                Date: {{measurement.date|date:'yyyy-MM-dd HH:mm:ss'}}
+                <br/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+</main>
