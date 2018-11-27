@@ -45,7 +45,8 @@ gulp.task('css', function(){
       require.resolve("bootstrap/dist/css/bootstrap.min.css"),
       require.resolve("nvd3/build/nv.d3.min.css"),
       './src/index.css'
-  ]))
+    ])
+  )
   .pipe(concat('app.css'))
   .pipe(gulp.dest('./dist'))
   .pipe(connect.reload());

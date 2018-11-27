@@ -1,4 +1,5 @@
 var $ = require('jquery');
+var socket = require('socket.io-client')("http://localhost:8082");
 
 module.exports = function(app){
     app.component('overview', {
@@ -16,6 +17,9 @@ module.exports = function(app){
                 })
                 .catch(err => {
                     console.error("ERR", err);
+                });
+                socket.on('NewMeasurement', data => {
+                    console.log("New Measurement", data);
                 });
             };
 

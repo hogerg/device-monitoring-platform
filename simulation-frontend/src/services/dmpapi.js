@@ -21,7 +21,7 @@ module.exports = function(app){
                         "Authorization" : 'Basic ' + Buffer.from("TestUser:SamplePassword").toString('base64')
                     },
                     success: function(data, textStatus, xhr){
-                        if(xhr.status == 200 || xhr.status == 201){
+                        if(xhr.status == 200 || xhr.status == 201 || xhr.status == 204){
                             resolve(data);
                         }else{
                             reject({
@@ -63,6 +63,22 @@ module.exports = function(app){
             });
         };
 
+        this.getDeviceById = function(id){
+            logger(`Get device by id ${id}`);
+            return apicall(north, `/devices/${id}`)
+            .catch(err => {
+                throw parseError(err);
+            });
+        };
+
+        this.deleteDevice = function(id){
+            logger(`Delete device by id ${id}`);
+            return apicall(north, `/devices/${id}`, {}, "DELETE")
+            .catch(err => {
+                throw parseError(err);
+            });
+        };
+
         this.getSensor = function(id){
             logger(`Get sensor by id: ${id}`);
             return apicall(north, `/sensors/${id}`)
@@ -74,6 +90,14 @@ module.exports = function(app){
         this.sendMeasurement = function(data){
             logger(`Send measurement`, data);
             return apicall(south, `/measurements`, data, "POST")
+            .catch(err => {
+                throw parseError(err);
+            });
+        };
+
+        this.registerDevice = function(data){
+            logger(`Register new device`, data);
+            return apicall(south, `/devices`, data, "POST")
             .catch(err => {
                 throw parseError(err);
             });

@@ -3,6 +3,14 @@
     src: url('fonts/EricssonHilda-Regular.ttf');
 }
  */
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../res/fonts/Montserrat-Regular.ttf');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
@@ -16,8 +24,7 @@ input:-webkit-autofill:active{
 
 body {
   height: 100vh;
-  font-family: 'Montserrat', sans-serif;
-  font-variant: normal;
+  font-family: 'Montserrat';
   background-image: url('../res/images/bg.jpg');
   background-repeat: no-repeat;
   background-size: cover;
@@ -46,6 +53,26 @@ h5 {
   max-width: 90%;
 }
 
+.btn, .btn:active, .btn:focus {
+  background-color: rgba(0,0,0, 0.8);
+  color: white;
+  border-color: black;
+  outline: 0!important;
+  box-shadow: none!important;
+  transition-duration: 0.35s;
+  border-radius: 0;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background-color: black;
+  color: white;
+  border-color: black;
+  outline: 0!important;
+  transition-duration: 0.35s;
+  box-shadow: none!important;
+}
+
 .list-group {
   margin-bottom: 1rem;
 }
@@ -63,22 +90,8 @@ h5 {
   color: white;
 }
 
-.btn, .btn:active, .btn:focus {
-  background-color: rgba(0,0,0, 0.8);
-  color: white;
-  border-color: black;
-  outline: 0!important;
-  transition-duration: 0.35s;
-  border-radius: 0;
-  text-decoration: none;
-}
-
-.btn:hover {
-  background-color: black;
-  color: white;
-  border-color: black;
-  outline: none;
-  transition-duration: 0.35s;
+.list-group-item-action {
+  background-color: rgba(0,0,0, 0.7);
 }
 
 .card {
@@ -134,4 +147,15 @@ chart nvd3 svg{
 .collapse-header.collapsed:after{
   font-family:Fontawesome;
   content:'\f054';
+}
+
+#deviceModalTitle{
+  color: black; 
+  cursor: inherit; 
+  padding-left: 30px;
+}
+
+#interval{
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
 }

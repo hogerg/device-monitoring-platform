@@ -5,57 +5,95 @@
         <span class="list-group-item list-group-header d-inline-block text-center">Devices</span>
         <span class="list-group-item list-group-item-action btn" ng-show="$ctrl.devices.length == 0">No devices</span>
         <button type="button" class="list-group-item list-group-item-action btn" ng-repeat="device in $ctrl.devices" ng-click="$ctrl.viewDevice(device)">{{device.name}}</button>
+        <button type="button" class="list-group-item list-group-item-action btn" data-toggle="modal" data-target="#deviceModal">Add new device</button>
       </div>
     </div>
     <div class="col-md-9" ng-show="$ctrl.device">
       <fieldset class="title">
         <legend>{{$ctrl.device.name}}</legend>
       </fieldset>
-      <div class="w-100 ml-4 mr-4">
-        <table class="table">
+      <div class="w-100">
+        <table class="table border text-center">
           <thead>
-            <tr class="text-center">
+            <tr>
               <th class="w-25">Sensor</th>
-              <th class="w-75">Current value</th>
+              <th class="w-75">Generated value</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Temperature</td>
-              <td>24</td>
-            </tr>
-            <tr>
-              <td>Humidity</td>
-              <td>40</td>
-            </tr>
+            <tr ng-repeat="sensor in $ctrl.device.sensors">
+              <td>{{sensor.name}}</td>
+              <td>
+                <div ng-repeat="meas in $ctrl.sensorTypes[sensor.type]">{{meas.name}}:&nbsp;{{meas.value}}</div>
+              </td>
           </tbody>
         </table>
       </div>
-      <button class="btn" ng-click="$ctrl.startSimulation($ctrl.device)">Start simulation</button>
-      <button class="btn" ng-click="$ctrl.stopSimulation($ctrl.device)">Stop simulation</button>
-      <!-- <div class="mt-2" id="accordion" role="tablist" aria-multiselectable="false">
-        <div class="card" ng-repeat="sensor in $ctrl.device.sensors">
-          <div class="card-header" role="tab" id="heading{{sensor._id}}">
-            <h5 class="mb-0" data-toggle="collapse" data-parent="#accordion" href="#collapse{{sensor._id}}"
-                 aria-expanded="false" aria-controls="collapse{{sensor._id}}"
-                 ng-click="$ctrl.viewSensor(sensor)">
-              {{sensor.name}}
-            </h5>
+      <div class="col-12 row m-0 p-0">
+        <div class="col-12 col-md-10 form-group row m-0 mt-2 p-0">
+          <div class="col-12 col-md-6 row pr-0">
+            <label class="col-form-label-sm col-5 col-md-8 text-center" for="interval">Interval (s)</label>
+            <input id="interval" class="form-control form-control-sm col-7 col-md-4" type="text" ng-model="$ctrl.generatingInterval">
           </div>
-          <div id="collapse{{sensor._id}}" class="collapse" role="tabpanel" aria-labelledby="heading{{sensor._id}}" data-parent="#accordion">
-            <div class="card-block">
-              <div class="meas-block mt-2 mb-2" ng-repeat="measurement in sensor.measurements">
-                Measurement: {{measurement.name}}
-                <br/>
-                Value: {{measurement.value|limitTo:8}} {{measurement.unit}}
-                <br/>
-                Date: {{measurement.date|date:'yyyy-MM-dd HH:mm:ss'}}
-                <br/>
-              </div>
-            </div>
+          <div class="col-12 col-md-6">
+            <button class="btn w-100 btn-sm" ng-click="$ctrl.startSimulation($ctrl.device)" ng-if="!$ctrl.device.simulation">Generate measurements</button>
+            <button class="btn w-100 btn-sm" ng-click="$ctrl.stopSimulation($ctrl.device)" ng-if="$ctrl.device.simulation">Stop generating</button>
           </div>
         </div>
-      </div> -->
+        <div class="col-12 col-md-2 mt-2">
+          <button class="btn btn-sm pull-right bg-secondary" ng-click="$ctrl.deleteDevice($ctrl.device)">Delete device</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="deviceModal" tabindex="-1" role="dialog" aria-labelledby="deviceModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title w-100 text-center" id="deviceModalTitle">Register new device</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body col-8 offset-2">
+          <form>
+            <div class="form-group row">
+              <label class="col-form-label-sm col-sm-2" for="deviceName">Name</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control form-control-sm" id="deviceName" placeholder="Enter name" ng-model="$ctrl.deviceTemplate.device.name" ng-style="{'border-color': $ctrl.errorTemplate.device ? 'red' : '#ced4da'}" required>
+                <span class="invalid-feedback col-12" style="display: block;" ng-show="$ctrl.errorTemplate.device">Required</span>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-form-label-sm col-sm-2">Sensor</label>
+              <div class="col-sm-10 row m-0"> 
+                <select class="form-control form-control-sm input-sm col-4" ng-model="$ctrl.sensorTemplate.type" ng-style="{'border-color': $ctrl.errorTemplate.sensorType ? 'red' : '#ced4da'}" required>
+                  <option value="" disabled selected>Type</option>
+                  <option value="Temperature">Temperature</option>
+                  <option value="Humidity">Humidity</option>
+                  <option value="Acceleration">Acceleration</option>
+                  <option value="Location">Location</option>
+                </select>
+                <div class="col-8 pl-2 pr-0">
+                  <input type="text" class="form-control form-control-sm col-12" id="sensorName" placeholder="Enter name" ng-model="$ctrl.sensorTemplate.name" ng-style="{'border-color': $ctrl.errorTemplate.sensorName ? 'red' : '#ced4da'}" required>
+                </div>
+                <span class="col-4 invalid-feedback" style="display: block;" ng-show="$ctrl.errorTemplate.sensorType">Required</span>
+                <span class="col-8 invalid-feedback" style="display: block;" ng-show="$ctrl.errorTemplate.sensorName">Required</span>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-sm-10 row offset-sm-2" ng-repeat="sensor in $ctrl.deviceTemplate.sensors">
+                <span class="col-4">{{sensor.type}}</span>
+                <span class="col-8">{{sensor.name}}</span>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer mx-auto">
+          <button type="button" class="btn btn-secondary btn-sm" ng-click="$ctrl.addSensor()">+ Add sensor</button>
+          <button type="button" class="btn btn-primary btn-sm" ng-click="$ctrl.registerDevice()">Register device</button>
+        </div>
+      </div>
     </div>
   </div>
 </main>

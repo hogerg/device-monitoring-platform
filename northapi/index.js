@@ -119,51 +119,6 @@ router.get('/devices/:id', (req, res, next) => {
 });
 
 /**
- * @api {post} /devices Create a new device
- * @apiHeader {String} Authorization Basic authorization key
- * @apiHeaderExample {json} Header example:
- *     {
- *       "Authorization": "Basic UmFuZG9tVGVzdE5hbWU6QW5vdGhlclBhc3M="
- *     }
- * @apiGroup Devices
- * @apiParam {Object} device Device data
- * @apiParam {String} device.name Device name
- * @apiParam {Object[]} sensors Sensor data
- * @apiParam {String} sensors.name Sensor name
- * @apiParam {String} sensors.type Type type
- * @apiParamExample {json} Input
- *    {
- *      "device": { 
- *          "name": "foo" 
- *      },
- *      "sensors" [
- *          {
- *              "name": "bar",
- *              "type": "bartype"
- *          }
- *      ]
- *    }
- * @apiSuccess {String} _id Device id
- * @apiSuccessExample {json} Success
- *    HTTP/1.1 201 Created
- *    {
- *      "_id": "5bea93ea6626e50028386ad1"
- *    }
- * @apiErrorExample {json} Internal Server Error
- *    HTTP/1.1 500 Internal Server Error
- */
-router.post('/devices', (req, res, next) => {
-    console.log(`[API][Device][Create] ${req.body.device.name}`);
-    client.invoke("CreateDevice", req.body, (err, response, more) => {
-        if(err) {
-            err = JSON.parse(err.message);
-            return res.status(err.status).send({error: err.message});
-        }
-        return res.status(201).send(JSON.parse(response));
-    });
-});
-
-/**
  * @api {delete} /devices/:id Delete device by identifier
  * @apiHeader {String} Authorization Basic authorization key
  * @apiHeaderExample {json} Header example:
