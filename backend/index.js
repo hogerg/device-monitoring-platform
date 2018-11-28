@@ -130,12 +130,12 @@ var server = new zerorpc.Server({
             reply(JSON.stringify(err));
         });
     },
-    GetLatestMeasurements: function(sensor, reply) {
-        console.log(`[NorthAPI] Processing get latest measurements request for sensor id ${sensor}`);
+    GetLatestMeasurements: function(sensor, limit, reply) {
+        console.log(`[NorthAPI] Processing get latest ${limit} measurements request for sensor id ${sensor}`);
         mongoValidator(sensor)
-        .then(() => getLatestMeasurements(sensor))
+        .then(() => getLatestMeasurements(sensor, limit))
         .then(measurements => {
-            console.log(`[Measurement] Latest measurements found for sensor ${sensor}`);
+            console.log(`[Measurement] Latest measurements (limit: ${limit}) found for sensor ${sensor}`);
             reply(null, JSON.stringify(measurements));
         })
         .catch(err => {

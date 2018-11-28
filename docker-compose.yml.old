@@ -1,0 +1,42 @@
+version: "3"
+services:
+  backend:
+    build: ./backend
+    volumes:
+      - ./backend/index.js:/app/index.js
+    links:
+      - mongo
+    expose:
+      - "5000"
+      - "5001"
+    environment:
+      - ZERORPC_BIND_ADDR=tcp://*:5000
+      - ZMQ_BIND_ADDR=tcp://*:5001
+  northapi:
+    build: ./northapi
+    volumes:
+      - ./northapi/index.js:/app/index.js
+    ports:
+      - "8080:8080"
+    environment:
+      - ZERORPC_SERVER_ADDR=tcp://backend:5000
+  southapi:
+    build: ./southapi
+    volumes:
+      - ./southapi/index.js:/app/index.js
+    ports:
+      - "8081:8080"
+    environment:
+      - ZERORPC_SERVER_ADDR=tcp://backend:5000
+  pushserver:
+    build: ./pushserver
+    volumes:
+      - ./pushserver/index.js:/app/index.js
+    ports:
+      - "8082:8080"
+    environment:
+      - ZMQ_SERVER_ADDR=tcp://backend:5001
+  mongo:
+    image: mongo
+    expose:
+      - "27017"

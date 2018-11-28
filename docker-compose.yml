@@ -1,7 +1,8 @@
 version: "3"
 services:
-  backend:
+  backend-1:
     build: ./backend
+    container_name: backend-1
     volumes:
       - ./backend/index.js:/app/index.js
     links:
@@ -12,31 +13,58 @@ services:
     environment:
       - ZERORPC_BIND_ADDR=tcp://*:5000
       - ZMQ_BIND_ADDR=tcp://*:5001
-  northapi:
+  northapi-1:
     build: ./northapi
+    container_name: northapi-1
     volumes:
       - ./northapi/index.js:/app/index.js
-    ports:
-      - "8080:8080"
+    #ports:
+    #  - "8080:8080"
+    expose:
+      - "8080"
     environment:
-      - ZERORPC_SERVER_ADDR=tcp://backend:5000
+      - ZERORPC_SERVER_ADDR=tcp://backend-1:5000  
+  northapi-2:
+    build: ./northapi
+    container_name: northapi-2
+    volumes:
+      - ./northapi/index.js:/app/index.js
+    #ports:
+    #  - "8080:8080"
+    expose:
+      - "8080"
+    environment:
+      - ZERORPC_SERVER_ADDR=tcp://backend-1:5000
   southapi:
     build: ./southapi
+    container_name: southapi-1
     volumes:
       - ./southapi/index.js:/app/index.js
     ports:
       - "8081:8080"
     environment:
-      - ZERORPC_SERVER_ADDR=tcp://backend:5000
+      - ZERORPC_SERVER_ADDR=tcp://backend-1:5000
   pushserver:
     build: ./pushserver
+    container_name: pushserver-1
     volumes:
       - ./pushserver/index.js:/app/index.js
-    ports:
-      - "8082:8080"
+    #ports:
+    #  - "8082:8080"
+    expose:
+      - "8080"
     environment:
-      - ZMQ_SERVER_ADDR=tcp://backend:5001
+      - ZMQ_SERVER_ADDR=tcp://backend-1:5001
   mongo:
     image: mongo
+    container_name: mongo-1
     expose:
       - "27017"
+  nginx:
+    build: ./nginx
+    links:
+      - northapi-1
+      - northapi-2
+      - pushserver
+    ports:
+      - "8080:8080"

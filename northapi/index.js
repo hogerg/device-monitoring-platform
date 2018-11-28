@@ -40,6 +40,11 @@ app.options('*', (req, res) => {
 
 var router = express.Router();
 
+router.get('/test', (req, res, next) => {
+    console.log(`[API][Test]`);
+    return res.status(204).send();
+});
+
 /**
  * @api {get} /devices List all devices
  * @apiHeader {String} Authorization Basic authorization key
@@ -223,7 +228,7 @@ router.get('/measurements/:id', (req, res, next) => {
 });
 
 /**
- * @api {get} /measurements/latest/:sensor Find latest measurements by sensor identifier
+ * @api {get} /measurements/latest/:sensor?limit=:limit Find latest measurements by sensor identifier
  * @apiHeader {String} Authorization Basic authorization key
  * @apiHeaderExample {json} Header example:
  *     {
@@ -231,6 +236,7 @@ router.get('/measurements/:id', (req, res, next) => {
  *     }
  * @apiGroup Measurements
  * @apiParam {String} sensor Sensor id
+ * @apiParam {Query} limit Maximum number of measurements per measurement type
  * @apiSuccess {Object[]} measurements Latest measurements
  * @apiSuccess {String} measurements._id Measurement id 
  * @apiSuccess {String} measurements.name Measurement name
@@ -241,21 +247,40 @@ router.get('/measurements/:id', (req, res, next) => {
  * @apiSuccess {Number} measurements.__v Metadata containing the document revision number
  * @apiSuccessExample {json} Success
  *    HTTP/1.1 200 OK
- *    [{
- *      "_id": "5bea93ea6626e50028386ad1",
- *      "name": "Sensor Value",
- *      "value": 123,
- *      "unit": "°C",
- *      "date": "1542106641525",
- *      "sensor": "5bea93ea6626e50028386ad1",
- *      "__v": 1,
- *    }]
+ *    [
+ *      {
+ *          "_id": "Temperature",
+ *          "measurements": [
+ *              {
+ *                  "_id": "5bea93ea6626e50028386ad8",
+ *                  "name": "Sensor Value",
+ *                  "value": 23,
+ *                  "unit": "°C",
+ *                  "date": "1542106641525",
+ *                  "sensor": "5bea93ea6626e50028386ad1"
+ *              }
+ *          ]
+ *      },
+ *      {
+ *          "_id": "Humidity",
+ *          "measurements": [
+ *              {
+ *                  "_id": "5bea93ea6626e50028386ad9",
+ *                  "name": "Sensor Value",
+ *                  "value": 64,
+ *                  "unit": "%",
+ *                  "date": "1542106641525",
+ *                  "sensor": "5bea93ea6626e50028386ad2"
+ *              }
+ *          ]
+ *      }
+ *    ]
  * @apiErrorExample {json} Sensor not found
  *    HTTP/1.1 404 Not Found
  */
 router.get('/measurements/latest/:sensor', (req, res, next) => {
-    console.log(`[API][Measurement][Get] Get latest measurements for sensor ${req.params.sensor}`);
-    client.invoke("GetLatestMeasurements", req.params.sensor, (err, response, more) => {
+    console.log(`[API][Measurement][Get] Get latest measurements (limit: ${req.query.limit || 1}) for sensor ${req.params.sensor}`);
+    client.invoke("GetLatestMeasurements", req.params.sensor, req.query.limit || 1, (err, response, more) => {
         if(err) {
             err = JSON.parse(err.message);
             return res.status(err.status).send({error: err.message});

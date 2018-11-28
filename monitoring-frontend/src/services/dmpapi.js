@@ -70,9 +70,9 @@ module.exports = function(app){
             });
         };
 
-        this.getLatestMeasurements = function(sensorid){
-            logger(`Get latest measurements for sensor: ${sensorid}`);
-            return apicall(`/measurements/latest/${sensorid}`)
+        this.getLatestMeasurements = function(sensorid, limit){
+            logger(`Get latest measurements (limit: ${limit || 1}) for sensor: ${sensorid}`);
+            return apicall(`/measurements/latest/${sensorid}?limit=${limit || 1}`)
             .catch(err => {
                 throw parseError(err);
             });
