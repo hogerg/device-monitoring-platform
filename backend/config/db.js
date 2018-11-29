@@ -1,4 +1,4 @@
-var mongoose = require('mongoose').set('debug',true);
+var mongoose = require('mongoose').set('debug',false);
 mongoose.connect("mongodb://mongo:27017/dmp");
 mongoose.Promise = global.Promise;
 const db = mongoose.connection;

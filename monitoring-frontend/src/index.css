@@ -67,10 +67,17 @@ h5 {
   margin-bottom: 1rem;
 }
 
+
 .list-group-header {
   padding: .75rem 1.25rem;
   font-size: 14px;
   font-weight: bold;
+}
+
+#refresh {
+  color: white;
+  line-height: inherit;
+  cursor: pointer;
 }
 
 .list-group-item {
@@ -112,8 +119,13 @@ h5 {
   border-left: solid rgba(255,0,0,0.8) 5px;
 }
 
+.meas-block:hover {
+  background-color: rgba(0,0,0, 0.1);
+  transition: 1s;
+}
+
 chart nvd3 svg{
-  margin-top: -50px;
+  margin-top: 0px;
   margin-bottom: -40px;
 }
 
@@ -139,13 +151,7 @@ chart nvd3 svg{
   content:'\f054';
 }
 
-#deviceModalTitle{
-  color: black; 
-  cursor: inherit; 
-  padding-left: 30px;
-}
-
-#interval{
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
+.modal-title{
+  color: black;
+  cursor: inherit;
 }

@@ -102144,6 +102144,17 @@ module.exports = function(app){
             };
             ctrl.generatingInterval = 2;
 
+            let resetSensorTypes = function(){
+                $timeout(() => {
+                    ctrl.sensorTypes = {
+                        "Temperature": [{name: "Sensor Value",value: 0}],
+                        "Humidity": [{name: "Sensor Value",value: 0}],
+                        "Acceleration": [{name: "X Axis",value: 0},{name: "Y Axis",value: 0},{name: "Z Axis",value: 0}],
+                        "Location": [{name: "Latitude",value: 0},{name: "Longitude",value: 0}]
+                    };
+                });
+            }
+
             ctrl.addSensor = function(){
                 if(typeof ctrl.sensorTemplate.name === 'undefined' || ctrl.sensorTemplate.name == ""){
                     $timeout(() => {
@@ -102231,6 +102242,7 @@ module.exports = function(app){
             };
 
             ctrl.viewDevice = function(device){
+                resetSensorTypes();
                 if(typeof ctrl.device !== 'undefined' && ctrl.device != null){
                     $timeout(() => {
                         clearTimeout(ctrl.device.simulation);
@@ -102283,9 +102295,9 @@ module.exports = function(app){
                                     dmpapi.sendMeasurement({ sensor: s._id, value: randhum, unit: "%", name: "Humidity"});
                                     break;
                                 case 'Acceleration':
-                                    let randx = Math.ceil(Math.random()*3);
-                                    let randy = Math.ceil(Math.random()*3);
-                                    let randz = Math.ceil(Math.random()*3);
+                                    let randx = Math.random()*3;
+                                    let randy = Math.random()*3;
+                                    let randz = Math.random()*3;
                                     $timeout(() => {
                                         ctrl.sensorTypes['Acceleration'][0].value = randx;
                                         ctrl.sensorTypes['Acceleration'][1].value = randy;
@@ -102296,8 +102308,8 @@ module.exports = function(app){
                                     dmpapi.sendMeasurement({ sensor: s._id, value: randz, unit: "m/ss", name: "Z Axis"});
                                     break;
                                 case 'Location':
-                                    let lat = 47.4721536;
-                                    let lon = 19.0611954;
+                                    let lat = 47.472682;
+                                    let lon = 19.060005;
                                     $timeout(() => {
                                         ctrl.sensorTypes['Location'][0].value = lat;
                                         ctrl.sensorTypes['Location'][1].value = lon;

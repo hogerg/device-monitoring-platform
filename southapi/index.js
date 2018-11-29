@@ -75,7 +75,7 @@ var router = express.Router();
  *    HTTP/1.1 500 Internal Server Error
  */
 router.post('/devices', (req, res, next) => {
-    console.log(`[API][Device][Create] ${req.body.device.name}`);
+    // console.log(`[API][Device][Create] ${req.body.device.name}`);
     client.invoke("CreateDevice", req.body, (err, response, more) => {
         if(err) {
             err = JSON.parse(err.message);
@@ -116,7 +116,7 @@ router.post('/devices', (req, res, next) => {
  *    HTTP/1.1 500 Internal Server Error
  */
 router.post('/measurements', (req, res, next) => {
-    console.log(`[API][Measurement][Create] ${req.body.name}`);
+    // console.log(`[API][Measurement][Create] ${req.body.name}`);
     client.invoke("CreateMeasurement", req.body, (err, response, more) => {
         if(err) {
             err = JSON.parse(err.message);
@@ -130,5 +130,5 @@ app.use('/api', checkAuth, router);
 app.use('/', express.static('apidoc'));
 
 app.listen(8080, function(){
-    console.log('[Status] Southbound gateway listening on port 8080');
+    // console.log('[Status] Southbound gateway listening on port 8080');
 });

@@ -41,7 +41,7 @@ app.options('*', (req, res) => {
 var router = express.Router();
 
 router.get('/test', (req, res, next) => {
-    console.log(`[API][Test]`);
+    // console.log(`[API][Test]`);
     return res.status(204).send();
 });
 
@@ -76,7 +76,7 @@ router.get('/test', (req, res, next) => {
  *    HTTP/1.1 500 Internal Server Error
  */
 router.get('/devices', (req, res, next) => {
-    console.log(`[API][Device][Get] List all`);
+    // console.log(`[API][Device][Get] List all`);
     client.invoke("GetAllDevices", (err, response, more) => {
         if(err) {
             err = JSON.parse(err.message);
@@ -113,7 +113,7 @@ router.get('/devices', (req, res, next) => {
  *    HTTP/1.1 500 Internal Server Error
  */
 router.get('/devices/:id', (req, res, next) => {
-    console.log(`[API][Device][Get] ${req.params.id}`);
+    // console.log(`[API][Device][Get] ${req.params.id}`);
     client.invoke("GetDevice", req.params.id, (err, response, more) => {
         if(err) {
             err = JSON.parse(err.message);
@@ -140,7 +140,7 @@ router.get('/devices/:id', (req, res, next) => {
  *    HTTP/1.1 500 Internal Server Error
  */
 router.delete('/devices/:id', (req, res, next) => {
-    console.log(`[API][Device][Delete] ${req.params.id}`);
+    // console.log(`[API][Device][Delete] ${req.params.id}`);
     client.invoke("DeleteDevice", req.params.id, (err, response, more) => {
         if(err) {
             err = JSON.parse(err.message);
@@ -176,7 +176,7 @@ router.delete('/devices/:id', (req, res, next) => {
  *    HTTP/1.1 404 Not Found
  */
 router.get('/sensors/:id', (req, res, next) => {
-    console.log(`[API][Sensor][Get] ${req.params.id}`);
+    // console.log(`[API][Sensor][Get] ${req.params.id}`);
     client.invoke("GetSensor", req.params.id, (err, response, more) => {
         if(err) {
             err = JSON.parse(err.message);
@@ -217,7 +217,7 @@ router.get('/sensors/:id', (req, res, next) => {
  *    HTTP/1.1 404 Not Found
  */
 router.get('/measurements/:id', (req, res, next) => {
-    console.log(`[API][Measurement][Get] ${req.params.id}`);
+    // console.log(`[API][Measurement][Get] ${req.params.id}`);
     client.invoke("GetMeasurement", req.params.id, (err, response, more) => {
         if(err) {
             err = JSON.parse(err.message);
@@ -279,7 +279,7 @@ router.get('/measurements/:id', (req, res, next) => {
  *    HTTP/1.1 404 Not Found
  */
 router.get('/measurements/latest/:sensor', (req, res, next) => {
-    console.log(`[API][Measurement][Get] Get latest measurements (limit: ${req.query.limit || 1}) for sensor ${req.params.sensor}`);
+    // console.log(`[API][Measurement][Get] Get latest measurements (limit: ${req.query.limit || 1}) for sensor ${req.params.sensor}`);
     client.invoke("GetLatestMeasurements", req.params.sensor, req.query.limit || 1, (err, response, more) => {
         if(err) {
             err = JSON.parse(err.message);
@@ -332,7 +332,7 @@ router.get('/measurements/latest/:sensor', (req, res, next) => {
  *    HTTP/1.1 404 Not Found
  */
 router.get('/measurements/sensor/:sensor', (req, res, next) => {
-    console.log(`[API][Measurement][Get] Get measurements for sensor ${req.params.sensor}`);
+    // console.log(`[API][Measurement][Get] Get measurements for sensor ${req.params.sensor}`);
     client.invoke("GetMeasurementsBySensorId", req.params.sensor, (err, response, more) => {
         if(err) {
             err = JSON.parse(err.message);
@@ -346,5 +346,5 @@ app.use('/api', checkAuth, router);
 app.use('/', express.static('apidoc'));
 
 app.listen(8080, function(){
-    console.log('[Status] Northbound gateway listening on port 8080');
+    // console.log('[Status] Northbound gateway listening on port 8080');
 });

@@ -1,17 +1,9 @@
 {
-  "name": "idps-frontend",
+  "name": "dmp-monitoring-frontend",
   "version": "1.0.0",
-  "description": "IDPS Frontend Project",
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@gitlab.com/iot17/idps-frontend.git"
-  },
-  "author": "Ericsson",
-  "license": "Prop",
-  "bugs": {
-    "url": "https://gitlab.com/iot17/idps-frontend/issues"
-  },
-  "homepage": "https://gitlab.com/iot17/idps-frontend#README",
+  "description": "Device Monitoring Platform Monitoring Frontend",
+  "author": "Gergő Hodány",
+  "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-plugin-transform-remove-strict-mode": "0.0.2",

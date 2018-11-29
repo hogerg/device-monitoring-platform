@@ -18,8 +18,6 @@ services:
     container_name: northapi-1
     volumes:
       - ./northapi/index.js:/app/index.js
-    #ports:
-    #  - "8080:8080"
     expose:
       - "8080"
     environment:
@@ -29,19 +27,26 @@ services:
     container_name: northapi-2
     volumes:
       - ./northapi/index.js:/app/index.js
-    #ports:
-    #  - "8080:8080"
     expose:
       - "8080"
     environment:
       - ZERORPC_SERVER_ADDR=tcp://backend-1:5000
-  southapi:
+  southapi-1:
     build: ./southapi
     container_name: southapi-1
     volumes:
       - ./southapi/index.js:/app/index.js
-    ports:
-      - "8081:8080"
+    expose:
+      - "8080"
+    environment:
+      - ZERORPC_SERVER_ADDR=tcp://backend-1:5000
+  southapi-2:
+    build: ./southapi
+    container_name: southapi-2
+    volumes:
+      - ./southapi/index.js:/app/index.js
+    expose:
+      - "8080"
     environment:
       - ZERORPC_SERVER_ADDR=tcp://backend-1:5000
   pushserver:
@@ -49,8 +54,6 @@ services:
     container_name: pushserver-1
     volumes:
       - ./pushserver/index.js:/app/index.js
-    #ports:
-    #  - "8082:8080"
     expose:
       - "8080"
     environment:
@@ -60,11 +63,18 @@ services:
     container_name: mongo-1
     expose:
       - "27017"
-  nginx:
-    build: ./nginx
+  nginx-north:
+    build: ./nginx-north
     links:
       - northapi-1
       - northapi-2
       - pushserver
     ports:
       - "8080:8080"
+  nginx-south:
+    build: ./nginx-south
+    links:
+      - southapi-1
+      - southapi-2
+    ports:
+      - "8081:8080"

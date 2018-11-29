@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-md-3">
       <div class="list-group">
-        <span class="list-group-item list-group-header d-inline-block text-center">Devices</span>
+        <span id="devListHeader" class="list-group-item list-group-header d-inline-block text-center">Devices<i id="refresh" class="fa fa-refresh pull-right" ng-click="$ctrl.initialize()"></i></span>
         <span class="list-group-item list-group-item-action btn" ng-show="$ctrl.devices.length == 0">No devices</span>
         <button type="button" class="list-group-item list-group-item-action btn" ng-repeat="device in $ctrl.devices" ng-click="$ctrl.viewDevice(device)">{{device.name}}</button>
       </div>
@@ -28,16 +28,45 @@
               <p class="mt-3 pl-5">No measurements yet</p>
             </div>
             <div class="card-block" ng-show="!$ctrl.loadingSensor && sensor.measurements.length > 0">
-              <div class="meas-block mt-2 mb-2" ng-repeat="type in sensor.measurements">
-                Measurement: {{type.measurements[0].name}}
-                <br/>
-                Value: {{type.measurements[0].value|limitTo:8}} {{type.measurements[0].unit}}
-                <br/>
-                Date: {{type.measurements[0].date|date:'yyyy-MM-dd HH:mm:ss'}}
-                <br/>
+              <div class="meas-block mt-2 mb-2 row ml-0 mr-0" ng-click="$ctrl.toggleModal(sensor, type)" ng-repeat="type in sensor.measurements">
+                <div class="col-12 col-md-12">
+                  <p class="mb-0">Measurement: {{type.measurements[0].name}}</p>
+                  <p class="mb-0">Value: {{type.measurements[0].value|limitTo:8}} {{type.measurements[0].unit}}</p>
+                  <p class="mb-0">Date: {{type.measurements[0].date|date:'yyyy-MM-dd HH:mm:ss'}}</p>
+                </div>
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="measModal" tabindex="-1" role="dialog" aria-labelledby="measModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title w-100 text-center" id="measModalTitle">{{$ctrl.modalTemplate.title}}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body col-12">
+          <nvd3 class="col-12" options="$ctrl.copts" data="$ctrl.cdata" api="$ctrl.capi"></nvd3>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="mapModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title w-100 text-center" id="mapModalTitle">{{$ctrl.modalTemplate.title}}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body col-12">
+          <leaflet class="col-12" height="480px" defaults="$ctrl.leafletDefaults"></leaflet>
         </div>
       </div>
     </div>

@@ -25,15 +25,15 @@ zmqpub.bindSync(zmqpub_address);
 
 var server = new zerorpc.Server({
     CreateDevice: function(data, reply) {
-        console.log(`[NorthAPI] Processing create device request`);
+        // console.log(`[NorthAPI] Processing create device request`);
         createDevice(data.device)
         .then(device => {
-            console.log(`[Device] Device creation successful`);
+            // console.log(`[Device] Device creation successful`);
             let _did = device._id;
             Promise.all(data.sensors.map(sdata => 
                 createSensor({ ...sdata, device: _did })
                 .then(sensor => {
-                    console.log(`[Sensor] Sensor creation successful`); 
+                    // console.log(`[Sensor] Sensor creation successful`); 
                     device.sensors.push(sensor);
                 })
                 .catch(err => {
@@ -53,11 +53,11 @@ var server = new zerorpc.Server({
         });
     },
     DeleteDevice: function(id, reply) {
-        console.log(`[NorthAPI] Processing delete device request with id ${id}`);
+        // console.log(`[NorthAPI] Processing delete device request with id ${id}`);
         mongoValidator(id)
         .then(deleteDevice)
         .then(() => {
-            console.log("[Device] Device deleted");
+            // console.log("[Device] Device deleted");
             reply(null);
         })
         .catch(err => {
@@ -66,7 +66,7 @@ var server = new zerorpc.Server({
         });
     },
     GetAllDevices: function(reply) {
-        console.log(`[NorthAPI] Processing get all devices request`);
+        // console.log(`[NorthAPI] Processing get all devices request`);
         getAllDevices()
         .then(devices => {
             reply(null, JSON.stringify(devices));
@@ -77,11 +77,11 @@ var server = new zerorpc.Server({
         });
     },
     GetDevice: function(id, reply) {
-        console.log(`[NorthAPI] Processing get device request with id ${id}`);
+        // console.log(`[NorthAPI] Processing get device request with id ${id}`);
         mongoValidator(id)
         .then(getDevice)
         .then(device => {
-            console.log(`[Device] Device found with id ${id}`);
+            // console.log(`[Device] Device found with id ${id}`);
             reply(null, JSON.stringify(device));
         })
         .catch(err => {
@@ -90,12 +90,12 @@ var server = new zerorpc.Server({
         });
     },
     CreateMeasurement: function(data, reply) {
-        console.log(`[NorthAPI] Processing create measurement request`);
+        // console.log(`[NorthAPI] Processing create measurement request`);
         mongoValidator(data.sensor)
         .then(() => getSensor(data.sensor))
         .then(() => createMeasurement(data))
         .then(measurement => {
-            console.log("[Measurement] Measurement creation successful");
+            // console.log("[Measurement] Measurement creation successful");
             zmqpub.send(["NewMeasurement", JSON.stringify(measurement)]);
             reply(null, JSON.stringify({_id: measurement._id}));
         })
@@ -105,11 +105,11 @@ var server = new zerorpc.Server({
         });
     },
     deleteMeasurement: function(id, reply) {
-        console.log(`[NorthAPI] Processing delete measurement request with id ${id}`);
+        // console.log(`[NorthAPI] Processing delete measurement request with id ${id}`);
         mongoValidator(id)
         .then(deleteMeasurement)
         .then(() => {
-            console.log("[Measurement] Measurement deleted");
+            // console.log("[Measurement] Measurement deleted");
             reply(null);
         })
         .catch(err => {
@@ -118,11 +118,11 @@ var server = new zerorpc.Server({
         });
     },
     GetMeasurement: function(id, reply) {
-        console.log(`[NorthAPI] Processing get measurement request with id ${id}`);
+        // console.log(`[NorthAPI] Processing get measurement request with id ${id}`);
         mongoValidator(id)
         .then(getMeasurement)
         .then(measurement => {
-            console.log(`[Measurement] Measurement found with id ${id}`);
+            // console.log(`[Measurement] Measurement found with id ${id}`);
             reply(null, JSON.stringify(measurement));
         })
         .catch(err => {
@@ -131,11 +131,11 @@ var server = new zerorpc.Server({
         });
     },
     GetLatestMeasurements: function(sensor, limit, reply) {
-        console.log(`[NorthAPI] Processing get latest ${limit} measurements request for sensor id ${sensor}`);
+        // console.log(`[NorthAPI] Processing get latest ${limit} measurements request for sensor id ${sensor}`);
         mongoValidator(sensor)
         .then(() => getLatestMeasurements(sensor, limit))
         .then(measurements => {
-            console.log(`[Measurement] Latest measurements (limit: ${limit}) found for sensor ${sensor}`);
+            // console.log(`[Measurement] Latest measurements (limit: ${limit}) found for sensor ${sensor}`);
             reply(null, JSON.stringify(measurements));
         })
         .catch(err => {
@@ -144,11 +144,11 @@ var server = new zerorpc.Server({
         });
     },
     GetMeasurementsBySensorId: function(id, reply) {
-        console.log(`[NorthAPI] Processing get measurements request for sensor id ${id}`);
+        // console.log(`[NorthAPI] Processing get measurements request for sensor id ${id}`);
         mongoValidator(id)
         .then(getMeasurementsBySensorId)
         .then(measurements => {
-            console.log(`[Measurement] Measurements found for sensor id ${id}`);
+            // console.log(`[Measurement] Measurements found for sensor id ${id}`);
             reply(null, JSON.stringify(measurements));
         })
         .catch(err => {
@@ -157,11 +157,11 @@ var server = new zerorpc.Server({
         });
     },
     DeleteSensor: function(id, reply) {
-        console.log(`[NorthAPI] Processing delete sensor request with id ${id}`);
+        // console.log(`[NorthAPI] Processing delete sensor request with id ${id}`);
         mongoValidator(id)
         .then(deleteSensor)
         .then(() => {
-            console.log("[Sensor] Sensor deleted");
+            // console.log("[Sensor] Sensor deleted");
             reply(null);
         })
         .catch(err => {
@@ -170,11 +170,11 @@ var server = new zerorpc.Server({
         });
     },
     GetSensor: function(id, reply) {
-        console.log(`[NorthAPI] Processing get sensor request with id ${id}`);
+        // console.log(`[NorthAPI] Processing get sensor request with id ${id}`);
         mongoValidator(id)
         .then(getSensor)
         .then(sensor => {
-            console.log(`[Sensor] Sensor found with id ${id}`);
+            // console.log(`[Sensor] Sensor found with id ${id}`);
             reply(null, JSON.stringify(sensor));
         })
         .catch(err => {
@@ -183,11 +183,11 @@ var server = new zerorpc.Server({
         });
     },
     GetSensorsByDeviceId: function(id, reply) {
-        console.log(`[NorthAPI] Processing get sensors request for device id ${id}`);
+        // console.log(`[NorthAPI] Processing get sensors request for device id ${id}`);
         mongoValidator(id)
         .then(getSensorsByDeviceId)
         .then(sensors => {
-            console.log(`[Sensor] Sensors found for device id ${id}`);
+            // console.log(`[Sensor] Sensors found for device id ${id}`);
             reply(null, JSON.stringify(sensors));
         })
         .catch(err => {

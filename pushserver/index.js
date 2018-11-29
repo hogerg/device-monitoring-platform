@@ -18,6 +18,6 @@ zmqsub.subscribe("NewMeasurement");
 zmqsub.on("message", (topic, data) => {
     let t = topic.toString();
     let d = data.toString();
-    console.log(`[ZMQ][${t}] ${d}`);
+    // console.log(`[ZMQ][${t}] ${d}`);
     io.sockets.emit("NewMeasurement", JSON.parse(d));
 });

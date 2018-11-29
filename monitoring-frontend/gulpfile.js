@@ -44,6 +44,7 @@ gulp.task('css', function(){
     gulp.src([
       require.resolve("bootstrap/dist/css/bootstrap.min.css"),
       require.resolve("nvd3/build/nv.d3.min.css"),
+      require.resolve("leaflet/dist/leaflet.css"),
       './src/index.css'
   ]))
   .pipe(concat('app.css'))
@@ -63,9 +64,14 @@ gulp.task('views', function(){
   .pipe(connect.reload());
 });
 
-gulp.task('res', ['res.fontawesome'], function(){
+gulp.task('res', ['res.leaflet', 'res.fontawesome'], function(){
   return gulp.src(['./res/**'])
   .pipe(gulp.dest('./dist/res'));
+});
+
+gulp.task('res.leaflet', function(){
+  return gulp.src([path.dirname(require.resolve("leaflet/dist/leaflet.js")) + '/images/**'])
+  .pipe(gulp.dest('./dist/leaflet'))
 });
 
 gulp.task('res.fontawesome', function(){
