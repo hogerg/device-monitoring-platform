@@ -21,6 +21,12 @@ module.exports = function(app){
                         value: 0
                     }
                 ],
+                "Illuminance": [
+                    {
+                        name: "Sensor Value",
+                        value: 0
+                    }
+                ],
                 "Acceleration": [
                     {
                         name: "X Axis",
@@ -69,6 +75,7 @@ module.exports = function(app){
                     ctrl.sensorTypes = {
                         "Temperature": [{name: "Sensor Value",value: 0}],
                         "Humidity": [{name: "Sensor Value",value: 0}],
+                        "Illuminance": [{name: "Sensor Value",value: 0}],
                         "Acceleration": [{name: "X Axis",value: 0},{name: "Y Axis",value: 0},{name: "Z Axis",value: 0}],
                         "Location": [{name: "Latitude",value: 0},{name: "Longitude",value: 0}]
                     };
@@ -213,6 +220,13 @@ module.exports = function(app){
                                         ctrl.sensorTypes['Humidity'][0].value = randhum;    
                                     });
                                     dmpapi.sendMeasurement({ sensor: s._id, value: randhum, unit: "%", name: "Humidity"});
+                                    break;
+                                case 'Illuminance':
+                                    let randill = Math.ceil(Math.random()*1200);
+                                    $timeout(()=> {
+                                        ctrl.sensorTypes['Illuminance'][0].value = randill;    
+                                    });
+                                    dmpapi.sendMeasurement({ sensor: s._id, value: randill, unit: "Lux", name: "Illuminance"});
                                     break;
                                 case 'Acceleration':
                                     let randx = Math.random()*3;

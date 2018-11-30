@@ -169,7 +169,7 @@ module.exports = function(app){
                                 }
                                 else{
                                     $timeout(() => {
-                                        type.measurements = [ data, ...type.measurements ].splice(-10);
+                                        type.measurements = [ data, ...type.measurements ].splice(0, 10);
                                     });
                                 }
                             }
